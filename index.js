@@ -7,7 +7,7 @@ prompt.start();
 
 prompt.get(['prefix'], function (err, result) {
     if (err) { return onErr(err); }
-    vanityAddressGenerator(result.prefix);
+    vanityAddressGenerator(result.prefix.toLowerCase());
 });
 
 vanityAddressGenerator = (prefix) => {
@@ -25,7 +25,8 @@ vanityAddressGenerator = (prefix) => {
         const seed = bip39.mnemonicToSeedSync(mnemonic);
 
         const wallet = HDWallet.fromSeed(seed)
-        const address = wallet.derive(path).getAddress().toString('hex')
+        const address = wallet.derive(path).getAddress().toString('hex').toLowerCase();
+
         if (address.slice(0, prefix.length) == prefix) {
             console.log(`Vanity address found!`);
             console.log(`Address: 0x${address}`);
